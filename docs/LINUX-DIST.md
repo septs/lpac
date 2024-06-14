@@ -33,8 +33,9 @@ see <https://github.com/alpinelinux/aports/blob/master/community/lpac/APKBUILD>
 > If you want to use AUR, the package name is [lpac-git](https://aur.archlinux.org/packages/lpac-git)
 
 ```shell
+# from latest tagged version
 pacman -S lpac
-# or
+# from git head commit
 pacman -S lpac-git
 ```
 
