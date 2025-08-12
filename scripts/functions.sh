@@ -4,10 +4,8 @@ export MATCHINE="$(uname -m)"
 
 export WORKSPACE="${GITHUB_WORKSPACE:-$(pwd)}"
 export CURL_VERSION="8.6.0_1"
-export WOA_TOOLCHAIN_VERSION="2024-02-08"
 export MINGW_CURL_WIN64_BLOB="https://curl.se/windows/dl-$CURL_VERSION/curl-$CURL_VERSION-win64-mingw.zip"
 export MINGW_CURL_WIN64A_BLOB="https://curl.se/windows/dl-$CURL_VERSION/curl-$CURL_VERSION-win64a-mingw.zip"
-export MINGW32_TOOLCHAIN_BLOB="https://github.com/Windows-on-ARM-Experiments/mingw-woarm64-build/releases/download/$WOA_TOOLCHAIN_VERSION/aarch64-w64-mingw32-msvcrt-toolchain.tar.gz"
 
 case "$KERNEL" in
 Linux)
