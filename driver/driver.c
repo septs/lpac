@@ -1,5 +1,6 @@
 #include "driver.h"
 #include "driver.private.h"
+#include "http/wininet.h"
 
 #include <lpac/utils.h>
 
@@ -27,6 +28,9 @@
 #endif
 #ifdef LPAC_WITH_APDU_AT
 #    include "driver/apdu/at.h"
+#endif
+#ifdef LPAC_WITH_HTTP_WININET
+#    include "driver/http/wininet.h"
 #endif
 #ifdef LPAC_WITH_HTTP_CURL
 #    include "driver/http/curl.h"
@@ -58,6 +62,9 @@ static const struct euicc_driver *drivers[] = {
 #endif
 #ifdef LPAC_WITH_APDU_AT_WIN32
     &driver_apdu_at_win32,
+#endif
+#ifdef LPAC_WITH_HTTP_WININET
+    &driver_http_wininet,
 #endif
 #ifdef LPAC_WITH_HTTP_CURL
     &driver_http_curl,

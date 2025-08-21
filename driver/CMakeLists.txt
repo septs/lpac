@@ -10,6 +10,7 @@ option(LPAC_WITH_APDU_QMI_QRTR "Build QMI-over-QRTR backend for Qualcomm devices
 option(LPAC_WITH_APDU_MBIM "Build MBIM backend for MBIM devices (requires libmbim)" OFF)
 
 option(LPAC_WITH_HTTP_CURL "Build HTTP Curl interface" ON)
+cmake_dependent_option(LPAC_WITH_HTTP_WININET "Build HTTP WinInet Backend" ON WIN32 OFF)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} DIR_INTERFACE_SRCS)
 if(LPAC_DYNAMIC_DRIVERS)
@@ -129,6 +130,12 @@ if(LPAC_WITH_HTTP_CURL)
         endif()
     endif()
 endif()
+
+if (LPAC_WITH_HTTP_WININET)
+    target_compile_definitions(euicc-drivers PRIVATE LPAC_WITH_HTTP_WININET)
+    target_sources(euicc-drivers PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/http/wininet.c)
+    target_link_libraries(euicc-drivers wininet)
+endif ()
 
 if(LPAC_DYNAMIC_DRIVERS)
     # Install headers
