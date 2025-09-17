@@ -87,7 +87,7 @@ elseif (NOT NO_NETWORK)
     )
     FetchContent_MakeAvailable(cjson)
     set(CJSON_LIBRARY cjson)
-    # Force cJSON dynamically link CRT although it's statuc librgary.
+    # Force cJSON dynamically link CRT although it's static library.
     set_property(TARGET cjson PROPERTY
             MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 else ()
@@ -99,3 +99,4 @@ add_subdirectory(euicc)
 add_subdirectory(utils)
 add_subdirectory(driver)
 add_subdirectory(src)
+add_subdirectory(jsonrpc)
