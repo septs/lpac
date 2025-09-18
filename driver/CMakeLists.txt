@@ -9,7 +9,7 @@ option(LPAC_WITH_APDU_QMI "Build QMI backend for Qualcomm devices (requires libq
 option(LPAC_WITH_APDU_QMI_QRTR "Build QMI-over-QRTR backend for Qualcomm devices (requires libqrtr and libqmi headers)" OFF)
 option(LPAC_WITH_APDU_MBIM "Build MBIM backend for MBIM devices (requires libmbim)" OFF)
 
-option(LPAC_WITH_HTTP_CURL "Build HTTP Curl interface" ON)
+cmake_dependent_option(LPAC_WITH_HTTP_CURL "Build HTTP cURL interface" ON UNIX OFF)
 cmake_dependent_option(LPAC_WITH_HTTP_WINHTTP "Build HTTP WinHTTP interface (Win32 only)" ON WIN32 OFF)
 
 if(LPAC_DYNAMIC_DRIVERS)
@@ -155,20 +155,22 @@ if (LPAC_WITH_APDU_MBIM)
     list(APPEND LPAC_DRIVERS "driver_apdu_mbim")
 endif ()
 
-if(LPAC_WITH_HTTP_CURL)
+if (LPAC_WITH_HTTP_CURL)
+    if (NOT UNIX)
+        message(FATAL_ERROR "LPAC_WITH_HTTP_CURL is only supported on Unix platforms.")
+    endif ()
+
     add_library(driver_http_curl ${DRIVER_BUILD_TYPE} ${CMAKE_CURRENT_SOURCE_DIR}/http/curl.c)
     target_include_directories(driver_http_curl PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
     target_link_libraries(driver_http_curl PRIVATE euicc lpac-utils)
     set_target_properties(driver_http_curl PROPERTIES PREFIX "")
-    if(WIN32)
-        target_link_libraries(driver_http_curl PRIVATE ${DL_LIBRARY})
-    else()
-        find_package(CURL REQUIRED)
-        target_link_libraries(driver_http_curl PRIVATE curl)
-        list(APPEND LIBEUICC_DRIVERS_REQUIRES "libcurl")
-    endif()
+
+    find_package(CURL REQUIRED)
+    target_link_libraries(driver_http_curl PRIVATE curl)
+    list(APPEND LIBEUICC_DRIVERS_REQUIRES "libcurl")
+
     list(APPEND LPAC_DRIVERS "driver_http_curl")
-endif()
+endif ()
 
 if (LPAC_WITH_HTTP_WINHTTP)
     add_library(driver_http_winhttp ${DRIVER_BUILD_TYPE} ${CMAKE_CURRENT_SOURCE_DIR}/http/winhttp.c)
